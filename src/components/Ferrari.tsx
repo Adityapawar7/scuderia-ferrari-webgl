@@ -141,7 +141,7 @@ type GLTFResult = GLTF & {
 }
 
 export function Model(props: any) {
-  const { nodes, materials } = useGLTF('/2018_ferrari_488_gt3.glb') as unknown as GLTFResult
+  const { nodes, materials } = useGLTF('/2018_ferrari_488_gt3.glb', true) as unknown as GLTFResult
   return (
     <group {...props} dispose={null}>
       <group scale={0.01}>
@@ -256,4 +256,4 @@ export function Model(props: any) {
   )
 }
 
-useGLTF.preload('/2018_ferrari_488_gt3.glb')
+useGLTF.preload('/2018_ferrari_488_gt3.glb', true)

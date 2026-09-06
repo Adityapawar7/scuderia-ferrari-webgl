@@ -1,38 +1,34 @@
-import { useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import Hero from './components/sections/Hero';
-import Hotspots from './components/sections/Hotspots';
-import Specs from './components/sections/Specs';
-import Gallery from './components/sections/Gallery';
-import Footer from './components/sections/Footer';
 import Preloader from './components/ui/Preloader';
+import CustomCursor from './components/ui/CustomCursor';
 import { useLenisScroll } from './hooks/useLenis';
 import { useParallax } from './hooks/useParallax';
-import { useStore } from './store';
+
+// Lazy load below-the-fold sections for faster initial paint & bundle splitting
+const Hotspots = lazy(() => import('./components/sections/Hotspots'));
+const Specs = lazy(() => import('./components/sections/Specs'));
+const Gallery = lazy(() => import('./components/sections/Gallery'));
+const Footer = lazy(() => import('./components/sections/Footer'));
 
 function App() {
   useLenisScroll();
   useParallax(); // Global parallax
-  const setIsLoaded = useStore(state => state.setIsLoaded);
-
-  useEffect(() => {
-    // Temporary simulation of asset loading until 3D model is injected
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, [setIsLoaded]);
 
   return (
     <>
+      <CustomCursor />
       <div className="noise-overlay pointer-events-none z-50" />
       <Preloader />
       
       <main className="relative w-full text-white bg-transparent selection:bg-white selection:text-crimson-dark">
         <Hero />
-        <Hotspots />
-        <Specs />
-        <Gallery />
-        <Footer />
+        <Suspense fallback={null}>
+          <Hotspots />
+          <Specs />
+          <Gallery />
+          <Footer />
+        </Suspense>
       </main>
     </>
   );

@@ -3,10 +3,13 @@ import { Canvas } from '@react-three/fiber';
 import { Environment, PresentationControls, ContactShadows, Float } from '@react-three/drei';
 import { Model as Ferrari } from '../Ferrari';
 import { Suspense } from 'react';
+import { useInView } from '../../hooks/useInView';
 
 export default function Hero() {
+  const [sectionRef, isInView] = useInView<HTMLElement>({ rootMargin: '100px' });
+
   return (
-    <section id="hero-section" className="w-[100vw] h-[100vh] overflow-hidden relative">
+    <section ref={sectionRef} id="hero-section" className="w-[100vw] h-[100vh] overflow-hidden relative">
       
       {/* Layer 3: UI & Navigation (z-index: 50) */}
       <header className="relative w-full px-16 py-8 flex justify-between z-[50] pointer-events-auto text-white uppercase opacity-100" style={{ color: '#FFFFFF', opacity: 1 }}>
@@ -24,6 +27,9 @@ export default function Hero() {
           <img 
             src="/ferrari-logo.svg" 
             alt="Ferrari Logo" 
+            width="64"
+            height="64"
+            decoding="async"
             className="h-12 md:h-16 w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]" 
           />
         </div>
@@ -91,7 +97,12 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full z-[10] pointer-events-none block"
       >
         <div id="webgl-container" className="absolute inset-0 w-full h-full z-[10] pointer-events-auto block">
-          <Canvas shadows camera={{ position: [0, 0.2, 5.2], fov: 35 }} gl={{ alpha: true }}>
+          <Canvas 
+            frameloop={isInView ? 'always' : 'never'}
+            dpr={[1, 1.5]}
+            camera={{ position: [0, 0.2, 5.2], fov: 35 }} 
+            gl={{ powerPreference: 'high-performance', antialias: true, stencil: false, depth: true, alpha: true }}
+          >
             <Suspense fallback={null}>
               <PresentationControls 
                 global 
@@ -106,7 +117,7 @@ export default function Hero() {
                 </Float>
               </PresentationControls>
               <Environment preset="studio" environmentIntensity={0.9} />
-              <ContactShadows position={[0, -0.65, 0]} opacity={0.5} scale={35} blur={2} far={4} />
+              <ContactShadows position={[0, -0.65, 0]} opacity={0.5} scale={35} blur={2} far={4} frames={1} resolution={512} />
             </Suspense>
           </Canvas>
         </div>

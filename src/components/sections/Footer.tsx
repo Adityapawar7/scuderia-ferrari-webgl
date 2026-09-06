@@ -2,6 +2,7 @@ import { useEffect, useRef, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, ContactShadows, Float } from '@react-three/drei';
 import { Model as Ferrari } from '../Ferrari';
+import { useInView } from '../../hooks/useInView';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
@@ -33,7 +34,7 @@ function DrivingCar({ progressRef }: { progressRef: React.MutableRefObject<numbe
       <Float rotationIntensity={0.06} floatIntensity={0.12} speed={1.5}>
         <Ferrari scale={46} />
       </Float>
-      <ContactShadows position={[0, -0.01, 0]} opacity={0.55} scale={30} blur={2.2} far={4} color="#000000" />
+      <ContactShadows position={[0, -0.01, 0]} opacity={0.55} scale={30} blur={2.2} far={4} frames={1} resolution={512} color="#000000" />
     </group>
   );
 }
@@ -41,6 +42,7 @@ function DrivingCar({ progressRef }: { progressRef: React.MutableRefObject<numbe
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const progressRef = useRef(0);
+  const [, isInView] = useInView({ rootMargin: '300px' }, footerRef);
 
   useEffect(() => {
     if (!footerRef.current) return;
@@ -82,7 +84,12 @@ export default function Footer() {
       {/* Layer 2: 3D Driving Car Canvas (Drives in from left and parks in center) */}
       <div className="absolute inset-0 z-[10] pointer-events-none flex items-center justify-center">
         <div className="w-full h-full relative pointer-events-auto">
-          <Canvas shadows camera={{ position: [0, 0.3, 5.2], fov: 35 }} gl={{ alpha: true }}>
+          <Canvas 
+            frameloop={isInView ? 'always' : 'never'}
+            dpr={[1, 1.5]}
+            camera={{ position: [0, 0.3, 5.2], fov: 35 }} 
+            gl={{ powerPreference: 'high-performance', antialias: true, stencil: false, depth: true, alpha: true }}
+          >
             <Suspense fallback={null}>
               <DrivingCar progressRef={progressRef} />
               <Environment preset="studio" environmentIntensity={1.0} />

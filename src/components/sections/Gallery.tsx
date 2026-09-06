@@ -19,7 +19,7 @@ const galleryItems: GalleryItem[] = [
     title: 'AERODYNAMIC PROFILE',
     subtitle: 'WIND TUNNEL SCULPTED',
     description: 'Developed through over 300 hours of Computational Fluid Dynamics (CFD) and full-scale wind tunnel testing. The sculpted front splitter, dive planes, and active underfloor diffusers generate over 600kg of downforce.',
-    image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1200&auto=format&fit=crop',
     stat: '600 KG',
     statLabel: 'PEAK DOWNFORCE @ 250 KM/H',
     category: 'AERO'
@@ -41,7 +41,7 @@ const galleryItems: GalleryItem[] = [
     title: 'GT3 RACING COCKPIT',
     subtitle: 'DRIVER-CENTRIC TELEMETRY',
     description: 'Formed in matte carbon with backlit rotary controllers, integrated MoTeC digital telemetry screen, and FIA-spec Sabelt competition bucket seating.',
-    image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=800&auto=format&fit=crop',
     stat: 'CAN-BUS',
     statLabel: 'REAL-TIME DATA ACQUISITION',
     category: 'COCKPIT'
@@ -52,7 +52,7 @@ const galleryItems: GalleryItem[] = [
     title: 'RACING DNA & HERITAGE',
     subtitle: 'MARANELLO CHAMPIONSHIP PEDIGREE',
     description: 'With over 400 global victories including multiple titles at the 24 Hours of Le Mans, the 488 GT3 stands as the winningest platform in Ferrari GT history.',
-    image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1200&auto=format&fit=crop',
     stat: '400+ WINS',
     statLabel: 'INTERNATIONAL VICTORIES',
     category: 'TRACK'
@@ -94,6 +94,8 @@ export default function Gallery() {
           <img 
             src={galleryItems[0].image} 
             alt={galleryItems[0].title}
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-95"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
@@ -133,6 +135,8 @@ export default function Gallery() {
           <img 
             src={galleryItems[1].image} 
             alt={galleryItems[1].title}
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-75 group-hover:opacity-95"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
@@ -164,6 +168,8 @@ export default function Gallery() {
           <img 
             src={galleryItems[2].image} 
             alt={galleryItems[2].title}
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-75 group-hover:opacity-95"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
@@ -195,6 +201,8 @@ export default function Gallery() {
           <img 
             src={galleryItems[3].image} 
             alt={galleryItems[3].title}
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-75 group-hover:opacity-95"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent" />
@@ -236,6 +244,7 @@ export default function Gallery() {
               <img 
                 src={selectedItem.image} 
                 alt={selectedItem.title}
+                decoding="async"
                 className="w-full h-full object-cover" 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 to-transparent" />

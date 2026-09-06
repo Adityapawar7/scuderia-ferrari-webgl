@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, Float } from '@react-three/drei';
 import { Model as Ferrari } from '../Ferrari';
+import { useInView } from '../../hooks/useInView';
 import * as THREE from 'three';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -72,6 +73,7 @@ export default function Hotspots() {
   const containerRef = useRef<HTMLElement>(null);
   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [currentStage, setCurrentStage] = useState(0);
+  const [, isInView] = useInView({ rootMargin: '300px' }, containerRef);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -131,7 +133,12 @@ export default function Hotspots() {
       {/* Left side: Interactive 3D Car with dynamic scroll rotation */}
       <div className="w-full lg:w-1/2 h-full flex items-center justify-center relative">
         <div className="w-full h-[85vh] relative">
-          <Canvas shadows camera={{ position: [0, 0.35, 5.0], fov: 35 }} gl={{ alpha: true }}>
+          <Canvas 
+            frameloop={isInView ? 'always' : 'never'}
+            dpr={[1, 1.5]}
+            camera={{ position: [0, 0.35, 5.0], fov: 35 }} 
+            gl={{ powerPreference: 'high-performance', antialias: true, stencil: false, depth: true, alpha: true }}
+          >
             <Suspense fallback={null}>
               <HotspotCarModel stage={currentStage} />
               <Environment preset="studio" environmentIntensity={1.0} />
