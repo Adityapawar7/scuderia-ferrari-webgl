@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, Float } from '@react-three/drei';
 import { Model as Ferrari } from '../Ferrari';
-import { useInView } from '../../hooks/useInView';
 import * as THREE from 'three';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -73,12 +72,19 @@ export default function Hotspots() {
   const containerRef = useRef<HTMLElement>(null);
   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [currentStage, setCurrentStage] = useState(0);
-  const [, isInView] = useInView({ rootMargin: '300px' }, containerRef);
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
+      // 100% reliable visibility toggle that accounts for GSAP pin-spacers
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        onToggle: (self) => setIsInView(self.isActive),
+      });
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,

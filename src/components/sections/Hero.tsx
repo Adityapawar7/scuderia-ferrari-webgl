@@ -59,7 +59,7 @@ export default function Hero() {
         </div>
 
         {/* Blueprint Texture: Multi-Shade Crimson Concentric Rings & Crosshairs */}
-        <div className="hero-blueprint absolute inset-0 pointer-events-none">
+        <div className="hero-blueprint absolute inset-0 pointer-events-none will-change-transform">
           {/* Ring 1 (Outer subtle light-crimson hairline) */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[92vw] h-[92vw] max-w-[1450px] max-h-[1450px] border-[1px] border-[#ff3b4b]/15 rounded-full" />
           
@@ -81,7 +81,7 @@ export default function Hero() {
 
         {/* Massive Anchor Text */}
         <div 
-          className="hero-giant-text absolute bottom-[-1%] left-0 w-full flex justify-center pb-0 z-[1] overflow-hidden"
+          className="hero-giant-text absolute bottom-[-1%] left-0 w-full flex justify-center pb-0 z-[1] overflow-hidden will-change-transform"
         >
           <span 
             className="font-ui font-black whitespace-nowrap text-white/90 block text-center select-none tracking-tight"
@@ -105,7 +105,7 @@ export default function Hero() {
           >
             <Suspense fallback={null}>
               <PresentationControls 
-                global 
+                global={false} 
                 zoom={1} 
                 rotation={[0, -Math.PI / 2, 0]} 
                 polar={[-0.15, 0.15]} 

@@ -1,8 +1,7 @@
-import { useEffect, useRef, Suspense } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, ContactShadows, Float } from '@react-three/drei';
 import { Model as Ferrari } from '../Ferrari';
-import { useInView } from '../../hooks/useInView';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
@@ -42,12 +41,20 @@ function DrivingCar({ progressRef }: { progressRef: React.MutableRefObject<numbe
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const progressRef = useRef(0);
-  const [, isInView] = useInView({ rootMargin: '300px' }, footerRef);
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     if (!footerRef.current) return;
 
     const ctx = gsap.context(() => {
+      // 100% reliable visibility toggle for Footer WebGL canvas
+      ScrollTrigger.create({
+        trigger: footerRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        onToggle: (self) => setIsInView(self.isActive),
+      });
+
       // Trigger car driving in from left to right as footer scrolls into view
       gsap.to(progressRef, {
         current: 1,

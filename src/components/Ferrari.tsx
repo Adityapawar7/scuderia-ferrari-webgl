@@ -140,8 +140,23 @@ type GLTFResult = GLTF & {
   }
 }
 
+import { useMemo } from 'react'
+
 export function Model(props: any) {
   const { nodes, materials } = useGLTF('/2018_ferrari_488_gt3.glb', true) as unknown as GLTFResult
+
+  // Disable expensive real-time transmission framebuffer copying (doubles rendering framerate)
+  const glassMaterial = useMemo(() => {
+    if (!materials?.GLASS) return materials?.GLASS;
+    const mat = materials.GLASS.clone();
+    mat.transmission = 0;
+    mat.transparent = true;
+    mat.opacity = 0.35;
+    mat.roughness = 0.05;
+    mat.metalness = 0.1;
+    return mat;
+  }, [materials]);
+
   return (
     <group {...props} dispose={null}>
       <group scale={0.01}>
@@ -172,15 +187,15 @@ export function Model(props: any) {
         <mesh geometry={nodes.gt3LOD_A_FRONTBUMPER_mm_lights_LIGHTS_0.geometry} material={materials.LIGHTS} />
         <mesh geometry={nodes.gt3LOD_A_FRONTBUMPER_mm_misc_CARBON_0.geometry} material={materials.CARBON} />
         <mesh geometry={nodes.gt3LOD_A_FRONTBUMPER_mm_misc_MISC_0.geometry} material={materials.MISC} />
-        <mesh geometry={nodes.gt3LOD_A_FRONTBUMPER_mm_windows_GLASS_0.geometry} material={materials.GLASS} />
+        <mesh geometry={nodes.gt3LOD_A_FRONTBUMPER_mm_windows_GLASS_0.geometry} material={glassMaterial || materials.GLASS} />
         <mesh geometry={nodes.gt3LOD_A_GLASS_FRONT_mm_windows_BLACK_GLASS_0.geometry} material={materials.BLACK_GLASS} />
-        <mesh geometry={nodes.gt3LOD_A_GLASS_FRONT_mm_windows_GLASS_0.geometry} material={materials.GLASS} />
-        <mesh geometry={nodes.gt3LOD_A_GLASS_LEFT_QUARTER_mm_windows_GLASS_0.geometry} material={materials.GLASS} />
-        <mesh geometry={nodes.gt3LOD_A_GLASS_REAR_mm_windows_GLASS_0.geometry} material={materials.GLASS} />
+        <mesh geometry={nodes.gt3LOD_A_GLASS_FRONT_mm_windows_GLASS_0.geometry} material={glassMaterial || materials.GLASS} />
+        <mesh geometry={nodes.gt3LOD_A_GLASS_LEFT_QUARTER_mm_windows_GLASS_0.geometry} material={glassMaterial || materials.GLASS} />
+        <mesh geometry={nodes.gt3LOD_A_GLASS_REAR_mm_windows_GLASS_0.geometry} material={glassMaterial || materials.GLASS} />
         <mesh geometry={nodes.gt3LOD_A_GLASS_REAR_mm_windows_BLACK_GLASS_0.geometry} material={materials.BLACK_GLASS} />
-        <mesh geometry={nodes.gt3LOD_A_GLASS_RIGHT_QUARTER_mm_windows_GLASS_0.geometry} material={materials.GLASS} />
-        <mesh geometry={nodes.gt3LOD_A_HEADLIGHT_LENS_LEFT_mm_windows_GLASS_0.geometry} material={materials.GLASS} />
-        <mesh geometry={nodes.gt3LOD_A_HEADLIGHT_LENS_RIGHT_mm_windows_GLASS_0.geometry} material={materials.GLASS} />
+        <mesh geometry={nodes.gt3LOD_A_GLASS_RIGHT_QUARTER_mm_windows_GLASS_0.geometry} material={glassMaterial || materials.GLASS} />
+        <mesh geometry={nodes.gt3LOD_A_HEADLIGHT_LENS_LEFT_mm_windows_GLASS_0.geometry} material={glassMaterial || materials.GLASS} />
+        <mesh geometry={nodes.gt3LOD_A_HEADLIGHT_LENS_RIGHT_mm_windows_GLASS_0.geometry} material={glassMaterial || materials.GLASS} />
         <mesh geometry={nodes.gt3LOD_A_HOOD_mm_badges_BADGES_0.geometry} material={materials.BADGES} />
         <mesh geometry={nodes.gt3LOD_A_HOOD_mm_ext_phong4_0.geometry} material={materials.phong4} />
         <mesh geometry={nodes.gt3LOD_A_HOOD_mm_misc_MISC_0.geometry} material={materials.MISC} />

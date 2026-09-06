@@ -18,7 +18,6 @@ function App() {
   return (
     <>
       <CustomCursor />
-      <div className="noise-overlay pointer-events-none z-50" />
       <Preloader />
       
       <main className="relative w-full text-white bg-transparent selection:bg-white selection:text-crimson-dark">
