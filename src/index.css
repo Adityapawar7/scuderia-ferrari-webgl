@@ -63,9 +63,42 @@ html.lenis {
   background-image: url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2VGaWx0ZXIpIi8+PC9zdmc+');
 }
 
-/* Hide default cursor on desktop devices with fine pointer */
+/* Universal default cursor removal on desktop fine pointer devices */
 @media (hover: hover) and (pointer: fine) {
-  body, a, button, [role="button"], input, textarea, select, canvas, .cursor-pointer {
+  *, *::before, *::after {
     cursor: none !important;
   }
+}
+
+/* Interactive Cursor Visual States */
+.cursor-hover-interactive {
+  border-color: #FFE600 !important;
+  background-color: rgba(255, 186, 0, 0.12) !important;
+  box-shadow: 0 0 28px rgba(255, 186, 0, 0.45), inset 0 0 12px rgba(255, 186, 0, 0.15) !important;
+}
+
+.cursor-hover-canvas {
+  border-color: rgba(255, 186, 0, 0.9) !important;
+  background-color: rgba(255, 186, 0, 0.08) !important;
+  box-shadow: 0 0 24px rgba(255, 186, 0, 0.35) !important;
+}
+
+/* Click Shockwave Ripple Animation */
+@keyframes cursorRipple {
+  0% {
+    width: 12px;
+    height: 12px;
+    opacity: 0.95;
+    border-width: 2px;
+  }
+  100% {
+    width: 68px;
+    height: 68px;
+    opacity: 0;
+    border-width: 0.5px;
+  }
+}
+
+.cursor-ripple-anim {
+  animation: cursorRipple 0.45s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
 }
